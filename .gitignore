@@ -1,4 +1,8 @@
-node_modules
+node_modules/
 .env
+.env.*
+*.local
 
 .next
+/src/generated/prisma
+/home/aluno/Documentos/dev_web/smartnotes/backend/src/custom.d.ts
