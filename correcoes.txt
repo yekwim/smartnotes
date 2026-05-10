@@ -1,0 +1,38 @@
+NOTA: 9.5
+
+COMENTÁRIOS:
+Regra 1 - Tecnologias:
+Todas as tecnologias obrigatórias foram usadas durante a implementação.
+
+Regra 2 - Modelos Prisma:
+Os modelos do Prisma foram implementados corretamente.
+
+Regra 3 - Endpoints:
+Todas as rotas da API foram implementadas.
+
+Regra 4 - Validação de senha:
+As senhas dos usuários seguem todos os critérios pedidos no documento de especificação.
+
+Regra 5 - Requisitos de segurança:
+- Gerenciamento de segredos: OK, todos os segredos lidos via .env.
+- Hash de senha: OK, bcrypt com salt 10.
+- Sessão segura: OK (httpOnly, sameSite: lax, saveUninitialized: false, secure em produção).
+- Autorização nas notas (IDOR): OK, todas as operações verificam userId e retornam 404.
+- Rate limiting: OK, global de 100/15min e auth de 10/15min.
+- CORS: OK, com origin via variável de ambiente e credentials: true.
+- Helmet: OK, com hidePoweredBy, xContentTypeOptions e hsts ativados.
+- Timing attack: OK, executa bcrypt.compare mesmo quando o usuário não existe (no auth.controller.ts usa um hash dummy válido).
+
+Observação menor: existe um auth.service.ts não utilizado (a lógica está no controller), mas isso não afeta o funcionamento.
+
+Cálculo da nota:
+- Endpoints (30%): 30
+- Validações Joi (10%): 10
+- Autenticação por sessão (15%): 15
+- Autorização IDOR (15%): 15
+- Rate limiting (5%): 5
+- CORS (5%): 5
+- Hash + segredos (10%): 10
+- Timing attack (5%): 5
+- Helmet (5%): 5
+Total: ~10, com pequeno ajuste pela duplicação/inconsistência de service não utilizado.
