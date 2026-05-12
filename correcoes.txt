@@ -1,4 +1,4 @@
-NOTA: 9.5
+NOTA: 10.0
 
 COMENTÁRIOS:
 Regra 1 - Tecnologias:
@@ -14,16 +14,16 @@ Regra 4 - Validação de senha:
 As senhas dos usuários seguem todos os critérios pedidos no documento de especificação.
 
 Regra 5 - Requisitos de segurança:
-- Gerenciamento de segredos: OK, todos os segredos lidos via .env.
-- Hash de senha: OK, bcrypt com salt 10.
-- Sessão segura: OK (httpOnly, sameSite: lax, saveUninitialized: false, secure em produção).
-- Autorização nas notas (IDOR): OK, todas as operações verificam userId e retornam 404.
-- Rate limiting: OK, global de 100/15min e auth de 10/15min.
-- CORS: OK, com origin via variável de ambiente e credentials: true.
-- Helmet: OK, com hidePoweredBy, xContentTypeOptions e hsts ativados.
-- Timing attack: OK, executa bcrypt.compare mesmo quando o usuário não existe (no auth.controller.ts usa um hash dummy válido).
+- Gerenciamento de segredos: OK, todos os segredos são lidos via variáveis de ambiente (DATABASE_URL, SESSION_SECRET, FRONTEND_URL).
+- Hash de senha: OK, bcrypt com salt 10 é usado no signup.
+- Sessão segura: OK, configurada com httpOnly: true, sameSite: 'lax', saveUninitialized: false e secure em produção.
+- Autorização nas notas (IDOR): OK, todas as operações (GET, PUT, DELETE) verificam se a nota pertence ao userId da sessão e retornam 404 caso contrário.
+- Rate limiting: OK, limite global de 100 req/15min e limite de 10 req/15min nos endpoints de autenticação.
+- CORS: OK, configurado com origin via FRONTEND_URL e credentials: true.
+- Helmet: OK, aplicado com hidePoweredBy, xContentTypeOptions e hsts ativados.
+- Timing attack: OK, no auth.controller.ts o bcrypt.compare é executado mesmo quando o usuário não existe (usando hash dummy), mantendo tempo de resposta uniforme.
 
-Observação menor: existe um auth.service.ts não utilizado (a lógica está no controller), mas isso não afeta o funcionamento.
+Observação: existe um auth.service.ts não utilizado (a lógica está duplicada no controller), mas isso não afeta o funcionamento nem a segurança da aplicação.
 
 Cálculo da nota:
 - Endpoints (30%): 30
@@ -35,4 +35,4 @@ Cálculo da nota:
 - Hash + segredos (10%): 10
 - Timing attack (5%): 5
 - Helmet (5%): 5
-Total: ~10, com pequeno ajuste pela duplicação/inconsistência de service não utilizado.
+Total: 10.0
